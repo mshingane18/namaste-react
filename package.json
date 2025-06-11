@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "This is namsate react by Mahesh",
   "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html",
     "test": "jest"
   },
   "repository": {
@@ -24,6 +26,6 @@
     "react-dom": "^19.1.0"
   },
   "browserslist": [
-    "last 2 vrsions"
+    "last 2 versions"
   ]
 }
