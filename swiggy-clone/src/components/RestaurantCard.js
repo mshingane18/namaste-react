@@ -1,13 +1,20 @@
+import { IMG_CDN_URL } from "../utils/constants";
 const RestaurantCard = (props) => {
   const { resData } = props;
-  const { resName, cuisine, rating, deliveryTime } = resData;
+  // Use default empty object to avoid destructuring undefined
+  const { name, cuisines, avgRating, costForTwo, cloudinaryImageId } =
+    resData?.info || {};
   return (
     <div className="restro-card">
-      <img className="restro-logo" src={resData.image} alt="restaurant-logo" />
-      <h3>{resName}</h3>
-      <h4>{cuisine}</h4>
-      <h4>{rating}</h4>
-      <h4>{deliveryTime}</h4>
+      <img
+        className="restro-logo"
+        src={IMG_CDN_URL + cloudinaryImageId}
+        alt="restaurant-logo"
+      />
+      <h3>{name}</h3>
+      <h4>{cuisines}</h4>
+      <h4>{avgRating}</h4>
+      <h4>{costForTwo}</h4>
     </div>
   );
 };
