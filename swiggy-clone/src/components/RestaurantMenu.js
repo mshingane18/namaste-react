@@ -22,6 +22,7 @@ const RestaurantMenu = () => {
 
   if (restaurantInfo == null) return <Shimmer />;
 
+  console.log(restaurantInfo);
   const { info } = restaurantInfo?.cards[2]?.card?.card;
   const { itemCards } =
     restaurantInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card
@@ -52,8 +53,7 @@ const RestaurantMenu = () => {
               className="colaps"
               onClick={() => {
                 colaps ? setColaps(false) : setColaps(true);
-              }}
-            >
+              }}>
               {colaps ? "Show" : "Hide"}
             </button>
           </div>
