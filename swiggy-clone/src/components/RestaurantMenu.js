@@ -1,28 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Shimmer from "./Shimmer";
-import { IMG_CDN_URL, MENU_URL } from "../utils/constants";
+import { IMG_CDN_URL } from "../utils/constants";
 import { useParams } from "react-router-dom";
+import useRestaurantMenu from "../utils/useRestaurantMenu";
 
 const RestaurantMenu = () => {
-  const [restaurantInfo, setRestaurantInfo] = useState(null);
   const [colaps, setColaps] = useState(true);
 
   const { resId } = useParams();
 
-  useEffect(() => {
-    fetchMenu();
-  }, []);
-
-  const fetchMenu = async () => {
-    const data = await fetch(MENU_URL + resId);
-    const jsonData = await data.json();
-    console.log(jsonData);
-    setRestaurantInfo(jsonData?.data);
-  };
+  const restaurantInfo = useRestaurantMenu(resId);
 
   if (restaurantInfo == null) return <Shimmer />;
 
-  console.log(restaurantInfo);
   const { info } = restaurantInfo?.cards[2]?.card?.card;
   const { itemCards } =
     restaurantInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card
@@ -53,7 +43,8 @@ const RestaurantMenu = () => {
               className="colaps"
               onClick={() => {
                 colaps ? setColaps(false) : setColaps(true);
-              }}>
+              }}
+            >
               {colaps ? "Show" : "Hide"}
             </button>
           </div>
