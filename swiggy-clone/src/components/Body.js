@@ -3,30 +3,28 @@ import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import { SWIGGY_API } from "../utils/constants";
+import useRestaurantList from "../utils/useRestaurantList";
+import useOnlineStatus from "../utils/useOnlineStatus";
 
 const Body = () => {
-  const [restaurantList, setRestaurantList] = useState([]);
+  const restaurantList = useRestaurantList();
+  const [searchText, setSearchText] = useState("");
   const [filteredRestaurant, setFilteredRestaurant] = useState([]);
 
-  const [searchText, setSearchText] = useState("");
+  const onlineStatus = useOnlineStatus();
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    // When restaurantList changes, reset filteredRestaurant
+    setFilteredRestaurant(restaurantList || []);
+  }, [restaurantList]);
 
-  const fetchData = async () => {
-    const data = await fetch(SWIGGY_API);
-    const json = await data.json();
-    setRestaurantList(
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+  if (onlineStatus === false)
+    return (
+      <h1>Looks like you are offline!! check your internet connection.</h1>
     );
-    setFilteredRestaurant(
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
-  };
 
   //conditional rendering
-  return restaurantList.length === 0 ? (
+  return restaurantList === null ? (
     <Shimmer />
   ) : (
     <div className="body">
@@ -47,7 +45,6 @@ const Body = () => {
                   ?.toLowerCase()
                   ?.includes(searchText.toLowerCase())
               );
-              console.log(filteredList);
               setFilteredRestaurant(filteredList);
             }}
           >
@@ -60,7 +57,7 @@ const Body = () => {
             const filteredList = restaurantList.filter(
               (res) => res?.info?.avgRating > 4.5
             );
-            setRestaurantList(filteredList);
+            setFilteredRestaurant(filteredList);
           }}
         >
           Top Rated Restaurant
