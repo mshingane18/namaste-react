@@ -1,4 +1,4 @@
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard, { withDiscountLabel } from "./RestaurantCard";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
@@ -13,6 +13,8 @@ const Body = () => {
 
   const onlineStatus = useOnlineStatus();
 
+  const ResCardWithDiscount = withDiscountLabel(RestaurantCard);
+
   useEffect(() => {
     // When restaurantList changes, reset filteredRestaurant
     setFilteredRestaurant(restaurantList || []);
@@ -22,15 +24,15 @@ const Body = () => {
     return (
       <h1>Looks like you are offline!! check your internet connection.</h1>
     );
-
   //conditional rendering
   return restaurantList === null ? (
     <Shimmer />
   ) : (
     <div className="body">
-      <div className="filter">
-        <div className="search">
+      <div className="flex m-4 justify-center">
+        <div className="flex mx-2">
           <input
+            className="border border-solid"
             type="text"
             onChange={(e) => {
               setSearchText(e.target.value);
@@ -38,7 +40,7 @@ const Body = () => {
             value={searchText}
           />
           <button
-            className="search-btn"
+            className="bg-green-400 mx-2 px-2 py-1 rounded-sm cursor-pointer"
             onClick={() => {
               const filteredList = restaurantList.filter((restaurant) =>
                 restaurant?.info?.name
@@ -52,7 +54,7 @@ const Body = () => {
           </button>
         </div>
         <button
-          className="filter-btn"
+          className="bg-green-400 mx-2 px-2 py-1 rounded-sm cursor-pointer"
           onClick={() => {
             const filteredList = restaurantList.filter(
               (res) => res?.info?.avgRating > 4.5
@@ -63,12 +65,16 @@ const Body = () => {
           Top Rated Restaurant
         </button>
       </div>
-      <div className="restro-container">
+      <div className="flex flex-wrap justify-center bg-white">
         {filteredRestaurant.map((restaurant, index) => {
           let id = restaurant?.info?.id || index;
           return (
-            <Link className="restaurant-card" key={id} to={"/restaurant/" + id}>
-              <RestaurantCard resData={restaurant} />
+            <Link className="m-2 p-2" key={id} to={"/restaurant/" + id}>
+              {restaurant.info.aggregatedDiscountInfoV3 ? (
+                <ResCardWithDiscount resData={restaurant} />
+              ) : (
+                <RestaurantCard resData={restaurant} />
+              )}
             </Link>
           );
         })}
