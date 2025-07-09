@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Item from "./Item";
 
-const RestaurantCategories = ({ data }) => {
-  const [show, setShow] = useState(false);
+const RestaurantCategories = ({ data, showItem,setShowIndex }) => {
+
   const onClickHandler = () => {
-    setShow(!show);
+     setShowIndex();
   };
   return (
     <div>
@@ -19,7 +19,7 @@ const RestaurantCategories = ({ data }) => {
             </div>
             <div>🔽</div>
           </div>
-          <div>{show && <Item itemCards={data.card.card.itemCards} />}</div>
+          <div>{showItem && <Item itemCards={data.card.card.itemCards} />}</div>
         </div>
       </div>
     </div>
