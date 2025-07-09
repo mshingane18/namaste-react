@@ -1,10 +1,11 @@
 import RestaurantCard, { withDiscountLabel } from "./RestaurantCard";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import { SWIGGY_API } from "../utils/constants";
 import useRestaurantList from "../utils/useRestaurantList";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import UserContext from "../utils/UserContext";
 
 const Body = () => {
   const restaurantList = useRestaurantList();
@@ -24,6 +25,8 @@ const Body = () => {
     return (
       <h1>Looks like you are offline!! check your internet connection.</h1>
     );
+
+  const { loggedInUser, setUserName } = useContext(UserContext);
   //conditional rendering
   return restaurantList === null ? (
     <Shimmer />
@@ -64,6 +67,15 @@ const Body = () => {
         >
           Top Rated Restaurant
         </button>
+        <div>
+          <label>UserName: </label>
+          <input
+            type="text"
+            className="border border-black p-2"
+            value={loggedInUser}
+            onChange={(e) => setUserName(e.target.value)}
+          />
+        </div>
       </div>
       <div className="flex flex-wrap justify-center bg-white">
         {filteredRestaurant.map((restaurant, index) => {
