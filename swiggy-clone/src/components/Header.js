@@ -3,12 +3,14 @@ import { Logo_URL } from "../utils/constants";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
 import UserContext from "../utils/UserContext";
+import CartContext from "../utils/CartContext";
 
 const Header = () => {
   const [btnName, setBtnName] = useState("Login");
 
   const onlineStatus = useOnlineStatus();
   const { loggedInUser } = useContext(UserContext);
+  const { itemCount  } = useContext(CartContext);
 
   return (
     <div className="flex justify-between bg-green-50 shadow-md">
@@ -31,6 +33,9 @@ const Header = () => {
           </li>
           <li className="mx-4 text-blue-800">
             <Link to="/grocery">Grocery Store</Link>
+          </li>
+          <li className="mx-4 text-blue-800">
+            <Link to="/cart">Cart({itemCount})</Link>
           </li>
           <li className="mx-4">
             <button

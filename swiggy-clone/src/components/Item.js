@@ -1,5 +1,9 @@
 import { IMG_CDN_URL } from "../utils/constants";
+import { useContext } from "react";
+import CartContext from "../utils/CartContext";
 const Item = ({ itemCards }) => {
+  const { cartItems, setCartItems,itemCount, setItemCount  } = useContext(CartContext);
+
   return (
     <div>
       {itemCards.map((item) => {
@@ -23,7 +27,11 @@ const Item = ({ itemCards }) => {
                 src={IMG_CDN_URL + item.card.info.imageId}
                 alt="resImg"
               />
-              <button className="absolute bottom-1 bg-white cursor-pointer text-black font-bold p-2 rounded-md border border-gray-400">
+              <button className="absolute bottom-1 bg-white cursor-pointer text-black font-bold p-2 rounded-md border border-gray-400"
+              onClick={() => {
+                setCartItems([...cartItems, item.card.info])
+                setItemCount(itemCount + 1)
+              }}>
                 Add ➕
               </button>
             </div>
